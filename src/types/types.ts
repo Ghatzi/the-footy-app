@@ -11,13 +11,19 @@ export interface Teams {
 }
 
 export interface Players {
-  players: [
-    {
-      id: number;
-      name: string;
-      age: number;
-      number: number;
-      position: string;
-    }
-  ];
+  players: Player[];
+}
+
+export interface Player {
+  id: number;
+  name: string;
+  position: string;
+  age: number;
+  number: number;
+}
+
+export interface Headers {
+  name: string;
+  friendlyName: string;
+  type: string;
 }

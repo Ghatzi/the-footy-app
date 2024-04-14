@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { mdiMenuUp } from '@mdi/js';
-import { Players } from '@/types/types';
+import { Players, Headers } from '@/types/types';
 import { teamColors } from '@/composables/teamColors';
 
 const props = defineProps({
@@ -15,17 +14,45 @@ const props = defineProps({
   }
 });
 
-const tableHeaders = ['Name', 'Position', 'Age', 'Shirt Number'];
+const tableHeaders: Headers[] = [
+  {
+    name: 'name',
+    friendlyName: 'Name',
+    type: 'string'
+  },
+  {
+    name: 'position',
+    friendlyName: 'Position',
+    type: 'string'
+  },
+  {
+    name: 'age',
+    friendlyName: 'Age',
+    type: 'numeric'
+  },
+  {
+    name: 'number',
+    friendlyName: 'Shirt Number',
+    type: 'numeric'
+  }
+];
 
 const getData = computed(() =>
   props.players.flatMap((players: Players) => players)
 );
 
-const sortPlayers = (name?: string) => {
-  if (name)
-    getData.value.sort((a: any, b: any) => a['name'].localeCompare(b['name']));
-
-  console.log(getData.value);
+const sortPlayers = (sortBy: string, sortType: string, sortOrder: string) => {
+  props.players.flatMap((players: Players[]) => {
+    players.sort((a: any, b: any) =>
+      sortOrder === 'dsc'
+        ? sortType === 'numeric'
+          ? b[sortBy] - a[sortBy]
+          : b[sortBy].localeCompare(a[sortBy])
+        : sortType === 'numeric'
+        ? a[sortBy] - b[sortBy]
+        : a[sortBy].localeCompare(b[sortBy])
+    );
+  });
 };
 
 const getTeamColors = computed(() => {
@@ -49,14 +76,25 @@ const setLinearGradient = computed(() => {
 </script>
 
 <template>
-  <v-btn @click="sortPlayers('name')" color="green"> sort by name </v-btn>
-
   <v-table v-if="players.length" hover density="compact">
     <thead>
       <tr :style="setLinearGradient">
         <th v-for="headers in tableHeaders">
-          {{ headers }}
-          <v-icon :icon="mdiMenuUp" size="30" />
+          <span class="d-flex">
+            {{ headers.friendlyName }}
+            <span class="d-flex flex-column ml-1">
+              <i
+                @click="sortPlayers(headers.name, headers.type, 'asc')"
+                :title="`Sort ${headers.name} by ascending`"
+                class="sort-by-asc"
+              ></i>
+              <i
+                @click="sortPlayers(headers.name, headers.type, 'dsc')"
+                :title="`Sort ${headers.name} by decending`"
+                class="sort-by-dsc"
+              ></i>
+            </span>
+          </span>
         </th>
       </tr>
     </thead>
@@ -71,4 +109,22 @@ const setLinearGradient = computed(() => {
   </v-table>
 </template>
 
-<style scoped></style>
+<style scoped>
+.sort-by-asc,
+.sort-by-dsc {
+  cursor: pointer;
+  background: transparent;
+  border: solid 5px transparent;
+  border-top-width: 0;
+}
+
+.sort-by-asc {
+  margin: 3px 4px 0 3px;
+  border-bottom: solid 7px #fff;
+}
+
+.sort-by-dsc {
+  margin: 2px 4px 0 3px;
+  border-top: solid 7px #fff;
+}
+</style>

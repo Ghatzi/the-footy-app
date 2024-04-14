@@ -7,7 +7,7 @@ home page (for now)
 - [x] re-usable api call
 - [x] dropdown of premier league teams
 - [x] select team displays team squads widget (name, position, squad number & age)
-- [ ] filters to sort by name, position, squad number & age
+- [x] filters to sort by name, position, squad number & age
 - [ ] next fixture of team widget
 - [x] colour theme based on team colours (i.e Arsenal = red & white gradient)
 
