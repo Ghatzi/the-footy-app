@@ -1,8 +1,8 @@
 // import { leagueSettings } from '@/config/leagueSettings';
 
 export const getTeamOptions = {
-  method: 'GET',
-  url: 'http://localhost:3500/response'
+    method: "GET",
+    url: "http://localhost:3500/response",
 };
 
 // export const getTeamOptions = {
@@ -19,8 +19,8 @@ export const getTeamOptions = {
 // };
 
 export const getSquadOptions = {
-  method: 'GET',
-  url: 'http://localhost:3501/response'
+    method: "GET",
+    url: "http://localhost:3501/response",
 };
 
 // export const getSquadOptions = (id: number | string) => {

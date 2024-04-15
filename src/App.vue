@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import Teams from './components/Teams.vue';
+import Teams from "./components/Teams.vue";
 </script>
 
 <template>
-  <Teams />
+    <Teams />
 </template>
 
 <style lang="scss" scoped></style>
