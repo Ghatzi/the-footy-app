@@ -10,6 +10,9 @@ home page (for now)
 -   [x] filters to sort by name, position, squad number & age
 -   [ ] next fixture of team widget
 -   [x] colour theme based on team colours (i.e Arsenal = red & white gradient)
+-   [ ] previous results
+-   [ ] dynamically select week
+-   [ ] add new fonts
 
 phase 2:
 

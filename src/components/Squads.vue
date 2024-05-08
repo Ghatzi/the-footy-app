@@ -37,18 +37,20 @@ const tableHeaders: Headers[] = [
     },
 ];
 
-const sort = ref(true);
+const sortOrder = ref(true);
+const sortByName = ref("");
 
 const getData = computed(() =>
     props.players.flatMap((players: Players) => players)
 );
 
 const sortPlayers = (sortBy: string, sortType: string) => {
-    sort.value = !sort.value;
+    sortByName.value = sortBy;
+    sortOrder.value = !sortOrder.value;
 
     props.players.flatMap((players: Players[]) => {
         players.sort((a: any, b: any) =>
-            sort.value
+            sortOrder.value
                 ? sortType === "numeric"
                     ? b[sortBy] - a[sortBy]
                     : b[sortBy].localeCompare(a[sortBy])
@@ -80,20 +82,27 @@ const setLinearGradient = computed(() => {
 </script>
 
 <template>
+    <div style="background-color: aqua">
+        <h3>Team Squads</h3>
+
+        <p v-if="sortByName" class="text-capitalize">
+            Current Sort By: {{ sortByName }}
+        </p>
+    </div>
+
     <v-table v-if="players.length" hover density="compact">
         <thead>
             <tr :style="setLinearGradient">
                 <th v-for="headers in tableHeaders">
                     <span class="d-flex">
                         {{ headers.friendlyName }}
-                        <span class="d-flex flex-column ml-1">
+                        <span class="d-flex flex-column ml-1 icon">
                             <i
                                 @click="sortPlayers(headers.name, headers.type)"
                                 :title="`sort ${headers.name} by ${
-                                    sort ? 'ascending' : 'decending'
+                                    sortOrder ? 'ascending' : 'decending'
                                 }`"
-                                class="sort-by"
-                                :class="{ 'sort-by-icon': !sort }"
+                                :class="{ rotate: !sortOrder }"
                             ></i>
                         </span>
                     </span>
@@ -111,18 +120,20 @@ const setLinearGradient = computed(() => {
     </v-table>
 </template>
 
-<style scoped>
-.sort-by {
-    cursor: pointer;
-    background: transparent;
-    border: solid 5px transparent;
-    border-top-width: 0;
-    margin: 7px 4px 0 3px;
-    border-bottom: solid 7px #fff;
-}
+<style lang="scss" scoped>
+.icon {
+    i {
+        cursor: pointer;
+        background: transparent;
+        border: solid 5px transparent;
+        border-top-width: 0;
+        margin: 7px 4px 0 3px;
+        border-bottom: solid 7px #fff;
+    }
 
-.sort-by-icon {
-    transform: rotate(180deg);
-    transition: transform 0.2s 0.1s;
+    .rotate {
+        transform: rotate(180deg);
+        transition: transform 0.2s 0.1s;
+    }
 }
 </style>

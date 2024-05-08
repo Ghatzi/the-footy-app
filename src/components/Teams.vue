@@ -2,6 +2,7 @@
 import { ref, onMounted, Ref, computed } from "vue";
 import { mdiMagnify } from "@mdi/js";
 import Squads from "@/components/Squads.vue";
+import Fixtures from "@/components/Fixtures.vue";
 import { api } from "@/composables/axios";
 import { getTeamOptions, getSquadOptions } from "@/composables/api";
 import { Teams, Players } from "@/types/types";
@@ -45,8 +46,11 @@ const getTeamSquad = computed(async () => {
             v-model="selectedTeam"
             :items="getSortedTeams"
             @change="getTeamSquad"
-        >
-        </v-select>
+            bg-color="white"
+            variant="filled"
+        />
+
+        <Fixtures v-if="selectedTeam" :get-team-id="getTeamId(selectedTeam)" />
 
         <Squads
             v-if="selectedTeam"
@@ -56,4 +60,4 @@ const getTeamSquad = computed(async () => {
     </v-container>
 </template>
 
-<style scoped></style>
+<style lang="scss" scoped></style>
