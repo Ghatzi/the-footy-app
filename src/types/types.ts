@@ -28,3 +28,29 @@ export interface Headers {
     friendlyName: string;
     type: string;
 }
+
+export interface Fixtures {
+    fixture: {
+        id: number;
+        date: string;
+        venue: {
+            name: string;
+        };
+    };
+    league: {
+        id: number;
+        name: string;
+    };
+    teams: {
+        home: {
+            id: number;
+            name: string;
+            logo: string;
+        };
+        away: {
+            id: number;
+            name: string;
+            logo: string;
+        };
+    };
+}

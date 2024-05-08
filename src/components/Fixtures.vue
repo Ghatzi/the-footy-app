@@ -2,6 +2,8 @@
 import { onMounted, Ref, ref, computed } from "vue";
 import { getFixtureOptions } from "@/composables/api";
 import { api } from "@/composables/axios";
+import { formatDate } from "@/composables/functions";
+import { Fixtures } from "@/types/types";
 
 const props = defineProps({
     getTeamId: {
@@ -9,32 +11,6 @@ const props = defineProps({
         required: true,
     },
 });
-
-interface Fixtures {
-    fixture: {
-        id: number;
-        date: string;
-        venue: {
-            name: string;
-        };
-    };
-    league: {
-        id: number;
-        name: string;
-    };
-    teams: {
-        home: {
-            id: number;
-            name: string;
-            logo: string;
-        };
-        away: {
-            id: number;
-            name: string;
-            logo: string;
-        };
-    };
-}
 
 let fixtures: Ref<Fixtures[] | null> = ref(null);
 
@@ -50,39 +26,27 @@ const getFixturesById = computed(() => {
             x.teams.away.id === Number(props.getTeamId)
     );
 });
-
-const formatDate = (date: any) =>
-    new Date(date).toLocaleTimeString([], {
-        year: "numeric",
-        month: "numeric",
-        day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-    });
 </script>
 
 <template>
-    <div class="pa-4 fixtures">
+    <div class="pa-2">
         <h3>Next Fixture:</h3>
 
-        <!-- <div class="text-center">
-        <img :src="getFixturesById?.teams.home.logo" alt="" />
-        Vs
-        <img :src="getFixturesById?.teams.away.logo" alt="" />
-    </div> -->
+        <div class="text-center">
+            <img :src="getFixturesById?.teams.home.logo" alt="home team logo" />
+            <span class="text-h6">Vs</span>
+            <img :src="getFixturesById?.teams.away.logo" alt="away team logo" />
+        </div>
 
-        <div>
-            <p>{{ getFixturesById?.league.name }}</p>
-            <p>{{ formatDate(getFixturesById?.fixture.date) }}</p>
-            <p>{{ getFixturesById?.teams.home.name }}</p>
-            <p>{{ getFixturesById?.teams.away.name }}</p>
-            <p>{{ getFixturesById?.fixture.venue.name }}</p>
+        <div class="text-right">
+            <h5 class="font-weight-regular">
+                {{ formatDate(getFixturesById?.fixture.date) }}
+            </h5>
+            <h5 class="font-weight-regular">
+                {{ getFixturesById?.fixture.venue.name }}
+            </h5>
         </div>
     </div>
 </template>
 
-<style lang="scss" scoped>
-.fixtures {
-    background-color: red;
-}
-</style>
+<style lang="scss" scoped></style>

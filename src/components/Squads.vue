@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { Players, Headers } from "@/types/types";
 import { teamColors } from "@/composables/teamColors";
 
@@ -39,6 +39,14 @@ const tableHeaders: Headers[] = [
 
 const sortOrder = ref(true);
 const sortByName = ref("");
+
+watch(
+    () => props.getTeamId,
+    () => {
+        sortOrder.value = true;
+        sortByName.value = "";
+    }
+);
 
 const getData = computed(() =>
     props.players.flatMap((players: Players) => players)
@@ -82,12 +90,12 @@ const setLinearGradient = computed(() => {
 </script>
 
 <template>
-    <div style="background-color: aqua">
+    <div class="pa-2 bg-white">
         <h3>Team Squads</h3>
 
-        <p v-if="sortByName" class="text-capitalize">
+        <h5 v-if="sortByName" class="text-capitalize font-weight-regular">
             Current Sort By: {{ sortByName }}
-        </p>
+        </h5>
     </div>
 
     <v-table v-if="players.length" hover density="compact">
